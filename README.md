@@ -2,6 +2,8 @@
 
     - Create-react-app
     - Configured TailwindCSS
+    - React Routing
+    - validation
 
 # Features
 
