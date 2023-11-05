@@ -41,7 +41,7 @@ const Login = () => {
         .then((userCredential) => {
           //Signed Up
           const user = userCredential.user;
-          console.log(user);
+          // console.log(user);
           updateProfile(auth.currentUser, {
             displayName: name.current.value, photoURL: "https://avatars.githubusercontent.com/u/140100146?v=4"
           })
@@ -79,7 +79,7 @@ const Login = () => {
         .then((userCredential) => {
           //signed in
           const user = userCredential.user;
-          console.log(user);
+          // console.log(user);
           navigate("/browse")
           //..
         })
