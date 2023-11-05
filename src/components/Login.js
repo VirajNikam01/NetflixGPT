@@ -1,24 +1,93 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import validate from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import {useDispatch} from 'react-redux'
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const signInOutHandler = () => {
     setIsSignIn(!isSignIn);
   };
 
+  const name = useRef(null)
   const email = useRef(null);
   const password = useRef(null);
 
   const btnInOut = () => {
     const message = validate(email.current.value, password.current.value);
     setErrorMessage(message);
-    if (message == null) {
-      email.current.value = null;
-      password.current.value = null;
+    if (message) return;
+
+    if (!isSignIn) {
+      //logic for SignUp
+
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          //Signed Up
+          const user = userCredential.user;
+          console.log(user);
+          updateProfile(auth.currentUser, {
+            displayName: name.current.value, photoURL: "https://avatars.githubusercontent.com/u/140100146?v=4"
+          })
+          .then(() => {
+            // Profile updated!
+            const { uid, email, displayName, photoURL } = auth.currentUser;
+            dispatch(
+              addUser({
+                uid: uid,
+                email: email,
+                displayName: displayName,
+                photoURL: photoURL,
+              })
+            );
+            navigate("/browse")
+            // ...
+          }).catch((error) => {
+            // An error occurred
+            setErrorMessage(error.message)
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "" + errorMessage);
+          // ..
+        });
+    } else {
+      //logic for sign in
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          //signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse")
+          //..
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "" + errorMessage);
+        });
     }
   };
 
@@ -41,6 +110,7 @@ const Login = () => {
           </h1>
           {!isSignIn && (
             <input
+            ref={name}
               className="px-2 py-3 outline-none bg-gray-700 bg-opacity-50 rounded "
               type="text"
               placeholder="Full Name"
@@ -72,7 +142,10 @@ const Login = () => {
             className="text-base cursor-pointer w-fit"
             onClick={signInOutHandler}
           >
-            <span className="text-gray-400">New to Netflix?</span> Sign up now.
+            <span className="text-gray-400">
+              {isSignIn ? "New to Netflix?" : "Already Member?"}
+            </span>
+            {isSignIn ? " Sign up now" : " Sign in now"}.
           </p>
           <p className="text-xs text-gray-400">
             This page is protected by Google reCAPTCHA to ensure you're not a

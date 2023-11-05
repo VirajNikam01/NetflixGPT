@@ -4,6 +4,15 @@
     - Configured TailwindCSS
     - React Routing
     - validation
+    - useRef Hook
+    - Firebase setup
+    - Deploying our app to production
+    - Create sign up user account
+    - Implement Sign in user api
+    - Created our redux store with userSlice
+    - Implemented sign out
+    - Update profile api call
+    - Metch Movies from TMDB Movies
 
 # Features
 
