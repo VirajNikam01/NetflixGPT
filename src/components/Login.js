@@ -56,7 +56,6 @@ const Login = () => {
                 photoURL: photoURL,
               })
             );
-            navigate("/browse")
             // ...
           }).catch((error) => {
             // An error occurred
@@ -79,9 +78,6 @@ const Login = () => {
         .then((userCredential) => {
           //signed in
           const user = userCredential.user;
-          // console.log(user);
-          navigate("/browse")
-          //..
         })
         .catch((error) => {
           const errorCode = error.code;
