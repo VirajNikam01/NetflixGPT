@@ -11,14 +11,14 @@ const VideoBackground = ({ id }) => {
   const videoTrailer = tarilerVideos.find((video) => {
     return video.type === "Trailer";
   });
-  console.log(videoTrailer);
+  // console.log(videoTrailer);
 
   // console.log(result);
 
   return (
     <div className="w-full ">
       <iframe
-        className="w-full aspect-square md:aspect-video"
+        className="w-full aspect-video"
         src = {"https://www.youtube.com/embed/" + videoTrailer.key + "?&autoplay=1&loop=1&mute=1"}
         title="YouTube video player"
         frameBorder="0"

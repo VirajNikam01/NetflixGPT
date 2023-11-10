@@ -52,7 +52,8 @@ const Header = () => {
       </div>
       {user && (
         <div className="mx-3 lg:mx-10 flex items-center">
-          <img className="w-10 mx-4" src={user?.photoURL} alt="user " />
+          {/* <img className="w-10 mx-4" src={user?.photoURL} alt="user " /> */}
+          <h1 className="text-white px-3 text-sm sm:text-lg ">Hello, <span className="text-teal-600">{user?.displayName}</span></h1>
           <button
             onClick={handelSignOut}
             className="bg-teal-700 text-white rounded px-2 lg:px-3 py-1 lg:py-2 transition-all duration-300 hover:bg-green-500"
